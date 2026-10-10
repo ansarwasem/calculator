@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OmniCalc Pro - Ultra Modern Scientific Calculator</title>
+  <meta name="description" content="Super attractive, ultra-fast, and feature-rich modern scientific calculator with interactive themes and audio feedback." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body data-theme="aurora">
+  <!-- Dynamic Glowing Background Shapes -->
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
+  <div class="ambient-glow glow-3"></div>
+
+  <!-- Main Container -->
+  <main class="calculator-wrapper">
+    <!-- Header Controls: Themes, Mode Switch, Sound Toggle, History Toggle -->
+    <header class="calc-header">
+      <div class="brand">
+        <span class="brand-icon">⚡</span>
+        <span class="brand-name">OmniCalc <small>PRO</small></span>
+      </div>
+
+      <div class="header-actions">
+        <!-- Sound Effect Toggle -->
+        <button id="soundToggle" class="icon-btn" title="Toggle Sound Feedback (Click / Beep)" aria-label="Toggle Sound">
+          <span id="soundIcon">🔊</span>
+        </button>
+
+        <!-- Mode Toggle (Standard / Scientific) -->
+        <button id="modeToggle" class="mode-pill-btn" title="Switch Standard / Scientific Mode">
+          <span class="pill-slider"></span>
+          <span class="pill-text std">Basic</span>
+          <span class="pill-text sci">Scientific</span>
+        </button>
+
+        <!-- History Drawer Toggle -->
+        <button id="historyToggle" class="icon-btn" title="View History" aria-label="View History">
+          <span>📜</span>
+        </button>
+
+        <!-- Theme Picker Dropdown -->
+        <div class="theme-dropdown">
+          <button id="themePickerBtn" class="icon-btn" title="Change Theme" aria-label="Change Theme">
+            <span>🎨</span>
+          </button>
+          <div class="theme-menu" id="themeMenu">
+            <button class="theme-opt active" data-set-theme="aurora">
+              <span class="swatch aurora-swatch"></span> Aurora Glow
+            </button>
+            <button class="theme-opt" data-set-theme="sunset">
+              <span class="swatch sunset-swatch"></span> Sunset Aura
+            </button>
+            <button class="theme-opt" data-set-theme="emerald">
+              <span class="swatch emerald-swatch"></span> Cyber Mint
+            </button>
+            <button class="theme-opt" data-set-theme="candy">
+              <span class="swatch candy-swatch"></span> Candy Pop
+            </button>
+            <button class="theme-opt" data-set-theme="dark">
+              <span class="swatch dark-swatch"></span> OLED Stealth
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Calculator Main Card -->
+    <section class="calculator-card" id="calculator">
+      <!-- Screen / Display Section -->
+      <div class="display-container">
+        <!-- Status Badges: DEG/RAD, Memory, Error Indicators -->
+        <div class="display-badges">
+          <span class="badge deg-badge" id="angleBadge">DEG</span>
+          <span class="badge memory-badge" id="memoryBadge" style="display: none;">MEM</span>
+          <button class="copy-badge-btn" id="copyBtn" title="Copy Current Display to Clipboard">
+            <span id="copyIcon">📋 Copy</span>
+          </button>
+        </div>
+
+        <!-- Upper expression history text -->
+        <div class="expression-line" id="expressionDisplay" aria-live="polite"></div>
+
+        <!-- Main primary result display -->
+        <div class="result-line" id="resultDisplay" tabindex="0" role="textbox" aria-readonly="true">0</div>
+      </div>
+
+      <!-- Quick Memory Bar -->
+      <div class="memory-strip">
+        <button class="mem-btn" data-mem="MC" title="Memory Clear">MC</button>
+        <button class="mem-btn" data-mem="MR" title="Memory Recall">MR</button>
+        <button class="mem-btn" data-mem="M+" title="Memory Add">M+</button>
+        <button class="mem-btn" data-mem="M-" title="Memory Subtract">M−</button>
+        <button class="mem-btn" data-mem="MS" title="Memory Store">MS</button>
+      </div>
+
+      <!-- Keypad Grid -->
+      <div class="keypad-layout" id="keypad">
+        <!-- Scientific Panel (Visible in Scientific mode) -->
+        <div class="scientific-panel" id="scientificPanel">
+          <button class="btn btn-sci" data-action="toggleAngle" id="angleToggleBtn" title="Toggle Degrees / Radians">DEG</button>
+          <button class="btn btn-sci" data-action="func" data-val="sin" title="Sine">sin</button>
+          <button class="btn btn-sci" data-action="func" data-val="cos" title="Cosine">cos</button>
+          <button class="btn btn-sci" data-action="func" data-val="tan" title="Tangent">tan</button>
+
+          <button class="btn btn-sci" data-action="func" data-val="asin" title="Inverse Sine">sin⁻¹</button>
+          <button class="btn btn-sci" data-action="func" data-val="acos" title="Inverse Cosine">cos⁻¹</button>
+          <button class="btn btn-sci" data-action="func" data-val="atan" title="Inverse Tangent">tan⁻¹</button>
+          <button class="btn btn-sci" data-action="func" data-val="ln" title="Natural Logarithm (base e)">ln</button>
+
+          <button class="btn btn-sci" data-action="func" data-val="log" title="Logarithm (base 10)">log</button>
+          <button class="btn btn-sci" data-action="const" data-val="π" title="Pi (3.14159...)">π</button>
+          <button class="btn btn-sci" data-action="const" data-val="e" title="Euler's Constant (2.71828...)">e</button>
+          <button class="btn btn-sci" data-action="op" data-val="^" title="Power (x^y)">xʸ</button>
+
+          <button class="btn btn-sci" data-action="func" data-val="sq" title="Square (x²)">x²</button>
+          <button class="btn btn-sci" data-action="func" data-val="cube" title="Cube (x³)">x³</button>
+          <button class="btn btn-sci" data-action="func" data-val="sqrt" title="Square Root">√x</button>
+          <button class="btn btn-sci" data-action="func" data-val="cbrt" title="Cube Root">³√x</button>
+
+          <button class="btn btn-sci" data-action="func" data-val="reciprocal" title="Reciprocal (1/x)">1/x</button>
+          <button class="btn btn-sci" data-action="func" data-val="fact" title="Factorial (n!)">n!</button>
+          <button class="btn btn-sci" data-action="func" data-val="abs" title="Absolute Value |x|">|x|</button>
+          <button class="btn btn-sci" data-action="op" data-val="%" title="Modulo or Percentage">mod</button>
+        </div>
+
+        <!-- Standard Core Keypad -->
+        <div class="standard-panel">
+          <!-- Row 1 -->
+          <button class="btn btn-action btn-clear" data-action="clear" title="All Clear (Escape / Delete)">AC</button>
+          <button class="btn btn-action" data-action="backspace" title="Backspace (Backspace)">⌫</button>
+          <button class="btn btn-action" data-action="paren" data-val="(" title="Open Parenthesis">(</button>
+          <button class="btn btn-action" data-action="paren" data-val=")" title="Close Parenthesis">)</button>
+          <button class="btn btn-operator" data-action="op" data-val="÷" title="Divide (/)">÷</button>
+
+          <!-- Row 2 -->
+          <button class="btn btn-action" data-action="percent" title="Percentage (%)">%</button>
+          <button class="btn btn-num" data-num="7">7</button>
+          <button class="btn btn-num" data-num="8">8</button>
+          <button class="btn btn-num" data-num="9">9</button>
+          <button class="btn btn-operator" data-action="op" data-val="×" title="Multiply (*)">×</button>
+
+          <!-- Row 3 -->
+          <button class="btn btn-action" data-action="negate" title="Toggle Negative/Positive (±)">±</button>
+          <button class="btn btn-num" data-num="4">4</button>
+          <button class="btn btn-num" data-num="5">5</button>
+          <button class="btn btn-num" data-num="6">6</button>
+          <button class="btn btn-operator" data-action="op" data-val="−" title="Subtract (-)">−</button>
+
+          <!-- Row 4 -->
+          <button class="btn btn-sci-shortcut" data-action="func" data-val="sqrt" title="Square Root">√</button>
+          <button class="btn btn-num" data-num="1">1</button>
+          <button class="btn btn-num" data-num="2">2</button>
+          <button class="btn btn-num" data-num="3">3</button>
+          <button class="btn btn-operator" data-action="op" data-val="+" title="Add (+)">+</button>
+
+          <!-- Row 5 -->
+          <button class="btn btn-num" data-num="00">00</button>
+          <button class="btn btn-num" data-num="0">0</button>
+          <button class="btn btn-num" data-action="dot" data-val=".">.</button>
+          <button class="btn btn-equals" data-action="equals" title="Calculate (= / Enter)">=</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive History Drawer Panel -->
+    <aside class="history-drawer" id="historyDrawer" aria-hidden="true">
+      <div class="history-header">
+        <h3><span>🕒</span> Calculation History</h3>
+        <div class="history-actions">
+          <button id="clearHistoryBtn" class="pill-btn danger-btn" title="Clear All History">Clear</button>
+          <button id="closeHistoryBtn" class="icon-btn" title="Close Drawer">✕</button>
+        </div>
+      </div>
+      <div class="history-list" id="historyList">
+        <div class="history-empty">
+          <span class="empty-icon">📭</span>
+          <p>No calculations yet.</p>
+          <small>Do some math, and your calculations will show up here!</small>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Notification Toast -->
+    <div class="toast" id="toastNotification">Copied to clipboard! 📋</div>
+
+    <!-- Quick Keyboard Guide Footer -->
+    <footer class="calc-footer">
+      <div class="footer-hint">
+        <span>💡 <b>Keyboard Supported:</b> Use <kbd>0-9</kbd>, <kbd>+</kbd>, <kbd>-</kbd>, <kbd>*</kbd>, <kbd>/</kbd>, <kbd>Enter</kbd> (=), <kbd>Backspace</kbd>, <kbd>Esc</kbd> (AC)</span>
+      </div>
+    </footer>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
